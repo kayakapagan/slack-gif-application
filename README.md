@@ -190,6 +190,10 @@ Project Link: [https://github.com/kayakapagan/slack-gif-application](https://git
 Below, you can find some resources that helped during the development, and may help you too.
 
 * [Slack API](https://api.slack.com)
+* [Bolt Python Documentation](https://slack.dev/bolt-python/tutorial/getting-started)
+* [How to build a simple Slack bot using the Bolt framework for Python by `PyBites`](https://www.youtube.com/watch?v=oDoFvpDftBA)
+* [Giphy API Documentation](https://developers.giphy.com/docs/api)
+* [README Template](https://github.com/othneildrew/Best-README-Template)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
