@@ -21,7 +21,6 @@ logger = logging.getLogger(__name__)
 
 @app.action("channel_selected")
 def action_channel_selected(body, ack, say):
-    # Acknowledge the action
     ack()
     say(
         channel=body["actions"][0]["selected_channel"],
@@ -45,7 +44,6 @@ def action_channel_selected_in_modal(_, ack):
 
 @app.action("normal_item_selected")
 def action_normal_item_selected(body, ack, say):
-    # Acknowledge the action
     ack()
     blocks = [
         {
@@ -110,6 +108,42 @@ def generate_find_gif_blocks(search_query, data, static_select_action_id):
     return generated_blocks
 
 
+def generate_search_gif_blocks(search_query, data, selected_channel_id):
+    generated_blocks = []
+    for i in range(len(data)):
+        generated_blocks.append(
+            {
+                "type": "image",
+                "title": {"type": "plain_text", "text": f"Choice {i+1}"},
+                "block_id": f"image{i}",
+                "alt_text": f"Choice {i+1} from Giphy search with {search_query}",
+                "image_url": data[i]["images"]["original"]["url"],
+            }
+        )
+        generated_blocks.append(
+            {
+                "type": "section",
+                "text": {
+                    "type": "plain_text",
+                    "text": f"Press send to the choice {i+1}",
+                },
+                "accessory": {
+                    "action_id": "gif_selected_in_modal",
+                    "type": "button",
+                    "text": {"type": "plain_text", "text": "send"},
+                    "value": json.dumps(
+                        {
+                            "url": data[i]["images"]["original"]["url"],
+                            "channel_id": selected_channel_id,
+                        }
+                    ),
+                },
+            }
+        )
+
+    return generated_blocks
+
+
 @app.command("/find-gif")
 def find_gif(ack, say, command):
     ack()
@@ -127,9 +161,7 @@ def find_gif(ack, say, command):
 
 @app.action("modal_item_selected")
 def action_modal_item_selected_update(ack, body, client):
-    # Acknowledge the button request
     ack()
-
     blocks = [
         {
             "type": "section",
@@ -162,9 +194,7 @@ def action_modal_item_selected_update(ack, body, client):
 
 @app.action("gif_selected_in_modal")
 def action_gif_selected_in_modal(ack, body, say):
-    # Acknowledge the button request
     ack()
-
     value = json.loads(body["actions"][0]["value"])
     channel_id = value["channel_id"]
     url = value["url"]
@@ -198,63 +228,28 @@ def search_submit(ack, body):
     )
     data = res.json()["data"]
 
-    # generated_blocks = generate_find_gif_blocks(
-    #     search_query, data, "modal_item_selected"
-    # )
-
-    generated_blocks = []
-    for i in range(len(data)):
-        generated_blocks.append(
-            {
-                "type": "image",
-                "title": {"type": "plain_text", "text": f"Choice {i+1}"},
-                "block_id": f"image{i}",
-                "alt_text": f"Choice {i+1} from Giphy search with {search_query}",
-                "image_url": data[i]["images"]["original"]["url"],
-            }
-        )
-        generated_blocks.append(
-            {
-                "type": "section",
-                "text": {
-                    "type": "plain_text",
-                    "text": f"Press send to the choice {i+1}",
-                },
-                "accessory": {
-                    "action_id": "gif_selected_in_modal",
-                    "type": "button",
-                    "text": {"type": "plain_text", "text": "send"},
-                    "value": json.dumps(
-                        {
-                            "url": data[i]["images"]["original"]["url"],
-                            "channel_id": selected_channel_id,
-                        }
-                    ),
-                },
-            }
-        )
+    generated_blocks = generate_search_gif_blocks(
+        search_query, data, selected_channel_id
+    )
 
     ack(
         response_action="push",
         view={
             "type": "modal",
-            # View identifier
-            # "callback_id": "view_1",
             "title": {"type": "plain_text", "text": "Updated modal"},
             "blocks": generated_blocks,
         },
     )
 
 
-# The open_modal shortcut listens to a shortcut with the callback_id "open_modal"
+# The search_shortcut shortcut listens to a shortcut with the callback_id "search_shortcut"
 @app.shortcut("search_shortcut")
 def search_shortcut(ack, shortcut, client):
-    # Acknowledge the shortcut request
     ack()
     # Call the views_open method using the built-in WebClient
     client.views_open(
         trigger_id=shortcut["trigger_id"],
-        # A simple view payload for a modal
+        # View payload for the modal
         view={
             "type": "modal",
             "callback_id": "modal-for-search-input",
