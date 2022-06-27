@@ -43,11 +43,17 @@
             <li><a href="#create-virtual-environment">Create Virtual Environment</a></li>
             <li><a href="#activate-virtual-environment-and-install-requirementstxt">Activate Virtual Environment and Install `requirements.txt`</a></li>
             <li><a href="#create-env-file">Create `.env` File</a></li>
-        </ul>
+          </ul>
         </li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
+    <li>
+      <a href="#usage">Usage</a>
+      <ul>
+        <li><a href="#with-command-find-gif">With Command `/find-gif`</a></li>
+        <li><a href="#with-shortcut-search-gifs">With Shortcut `search gifs`</a></li>
+      </ul>
+    </li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -93,6 +99,9 @@ Since this is a platform dependent project which depends on slack, we need to se
   * message.mpim
 * Come to the `Slash Commands` tab and press `Create New Command` button.
 * Write `/find-gif` as command and set a short description like `finds gifs`.
+* Come to the `Interactivity & Shortcuts` tab and press `Create New Shortcut` button.
+* Select `Global` for it to be displayed when shortcut button is used.
+* Write its name as `search gifs` as shortcut name and set a short description like `search best gifs to send`, then add the `Callback ID` as `search_shortcut` and press the `Create` button.
 
 #### Install Python
 
@@ -144,7 +153,15 @@ Since this is a platform dependent project which depends on slack, we need to se
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Make sure application is running. Then go to your own chat or go to the chat with your application and run command `/find-gif <write your search query here without '<','>' symbols>`. Application will print 10 gifs with that search query numbered from 1 to 10 and will ask you which one you want to send. After you pick the number, application will ask which channel you want to send. Be careful, if you do not invite the application to that channel before, application cannot send the gif. So first go to that channel and invite your application with `/invite <your application name>`. After that when you select the channel, it will send the selected gif directly.
+First of all, make sure application is running.
+
+### With Command `/find-gif`
+
+Go to your own chat or go to the chat with your application and run command `/find-gif <write your search query here without '<','>' symbols>`. Application will print 10 gifs with that search query numbered from 1 to 10 and will ask you which one you want to send. After you pick the number, application will ask which channel you want to send. Be careful, if you do not invite the application to that channel before, application cannot send the gif. So first go to that channel and invite your application with `/invite <your application name>`. After that when you select the channel, it will send the selected gif directly.
+
+### With Shortcut `search gifs`
+
+Press the `Attachments & shortcuts` button or write `/search` and slack will suggest you the `search gifs` shortcut. When you click, it will open a modal, write what you want to search as a gif and select where you would like to send it. In the next page, 10 gifs will be shown that you can scroll down and there will be a send button under each gif so that you can send it easily.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
