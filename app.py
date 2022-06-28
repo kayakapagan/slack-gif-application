@@ -284,15 +284,15 @@ def search_shortcut(ack, shortcut, client):
                     },
                 },
                 {
-                    "type": "section",
+                    "type": "input",
                     "block_id": "channel_selection_block_id",
-                    "text": {
-                        "type": "mrkdwn",
+                    "label": {
+                        "type": "plain_text",
                         "text": "Pick a channel from the dropdown list",
                     },
-                    "accessory": {
-                        "action_id": "channel_selected_in_modal",
+                    "element": {
                         "type": "channels_select",
+                        "action_id": "channel_selected_in_modal",
                         "placeholder": {
                             "type": "plain_text",
                             "text": "Select a channel",
