@@ -195,20 +195,29 @@ def action_modal_item_selected_update(ack, body, client):
 @app.action("gif_selected_in_modal")
 def action_gif_selected_in_modal(ack, body, say):
     ack()
+
     value = json.loads(body["actions"][0]["value"])
     channel_id = value["channel_id"]
     url = value["url"]
+    user_id = body["user"]["id"]
 
     say(
         channel=channel_id,
         blocks=[
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": "From <@" + user_id + ">",
+                },
+            },
             {
                 "type": "image",
                 "title": {"type": "plain_text", "text": "Enjoy your gif"},
                 "block_id": "image_selected",
                 "alt_text": "selected image from Giphy.",
                 "image_url": url,
-            }
+            },
         ],
     )
 
